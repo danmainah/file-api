@@ -1,0 +1,27 @@
+{
+  "name": "file-api",
+  "version": "1.0.0",
+  "description": "an api to store your images and videos",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danmainah/file-api.git"
+  },
+  "author": "dan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danmainah/file-api/issues"
+  },
+  "homepage": "https://github.com/danmainah/file-api#readme",
+  "dependencies": {
+    "express": "^4.19.2",
+    "fs": "^0.0.1-security",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.0",
+    "path": "^0.12.7"
+  }
+}
