@@ -3,6 +3,7 @@ const localStrategy = require('passport-local').Strategy;
 const JWTstrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 const User = require('../database/User');
+const Blacklist = require('../database/Blacklist')
 
 passport.use(
   'login',
@@ -27,7 +28,6 @@ passport.use(
 
         return done(null, user, { message: 'Logged in Successfully' });
       } catch (error) {
-        console.log(error)
         return done({error});
       }
     }
@@ -55,18 +55,24 @@ passport.use(
   )
 );
 
-  passport.use(
-    new JWTstrategy(
-      {
-        secretOrKey: 'TOP_SECRET',
-        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-      },
-      async (token, done) => {
-        try {
-          return done(null, token.user);
-        } catch (error) {
-          done(error);
+passport.use(
+  new JWTstrategy(
+    {
+      secretOrKey: 'TOP_SECRET',
+      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+    },
+    async (token, done) => {
+      try {
+        const blacklistedToken = await Blacklist.findOne({ where: { token: token } });
+
+        if (blacklistedToken) {
+          return done(null, false);
         }
+
+        return done(null, token.user);
+      } catch (error) {
+        done(error);
       }
-    )
-  );
+    }
+  )
+);

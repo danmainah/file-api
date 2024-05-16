@@ -1,6 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const Blacklist = require('../database/Blacklist')
 
 const router = express.Router();
 
@@ -48,4 +49,11 @@ router.post(
     }
   );
 
+  router.get('/logout', (req, res) => {
+    const token = req.headers.authorization.split(' ')[1]; // Extract the token
+    Blacklist.create({ token }); // Add the token to the blacklist
+    res.json({ message: 'You are now logged out!' });
+  });
+
+  
 module.exports = router;
