@@ -1,25 +1,27 @@
 const fs = require("fs")
-const path = require("path");
-const multer = require("multer");
+const jwt = require('jsonwebtoken');
 
 exports.getPosts = async (req, res) => {
      // Check if the "uploads" directory exists
-     if(fs.existsSync("uploads")){
-        fs.readdir("uploads", (err, files) => {
+     const token = req.headers.authorization.split(' ')[1]
+     const payload = jwt.decode(token);
+     const username = payload.user.username
+     if(fs.existsSync(`uploads/${username}`)){
+        fs.readdir(`uploads/${username}`, (err, files) => {
             if (err) {
                 console.log(err);
                 res.send("error");
             } else {
                 // Generate HTML to display each file in the "uploads" directory
-                let fileLinks = files.map(file => `<a href="/uploads/${file}">${file}</a>`).join('<br>');
+                let fileLinks = files.map(file => `<a href="/uploads/${username}/${file}">${file}</a>`).join('<br>');
                 res.send(fileLinks);
             }
         });
     }
     else{
-        fs.mkdir("uploads", (err) => {
+        fs.mkdir(`uploads/${username}`, (err) => {
             if (err) {
-                console.log(err);
+                console.log("err");
                 res.send("error");
             } else {
                 res.send("There are no files in uploads");
@@ -27,16 +29,6 @@ exports.getPosts = async (req, res) => {
         });
     }   
   };
-  
-  // Multer Configuration
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-      cb(null, Date.now() + '-' + file.originalname);
-    },
-});
 
 // Code to upload multiple images/videos
   exports.createPost = async (req , res) => {
@@ -46,4 +38,3 @@ const storage = multer.diskStorage({
       const filenames = req.files.map(file => file.filename);
       res.json({ message: 'Files uploaded successfully', filenames: filenames });
   };
-  

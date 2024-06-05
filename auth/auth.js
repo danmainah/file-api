@@ -63,7 +63,7 @@ passport.use(
     },
     async (token, done) => {
       try {
-        const blacklistedToken = await Blacklist.findOne({ where: { token: token } });
+        const blacklistedToken = await Blacklist.findOne({ where: { token: token.iat } });
 
         if (blacklistedToken) {
           return done(null, false);

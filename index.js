@@ -24,5 +24,8 @@ console.log('App listening...')
 })
 
 // Plug in the JWT strategy as a middleware so only verified users can access this route.
+app.get('/', (req, res) => {
+    res.json('Welcome to file api, an apai that helps you to store your files')
+  })
 app.use('/user', routes);
 app.use('/uploads',passport.authenticate('jwt', { session: false }), uploads);

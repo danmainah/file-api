@@ -12,7 +12,7 @@ class Blacklist extends Model {
 }
 
 Blacklist.init({
-    type: DataTypes.STRING,
+    token: DataTypes.STRING,
     allowNull: false
 }, { 
   sequelize, 
