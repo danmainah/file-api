@@ -20,8 +20,14 @@ class User extends Model {
 }
 
 User.init({
-  username: DataTypes.STRING,
-  email: DataTypes.STRING,
+  username: {
+    type: DataTypes.STRING,
+    unique: true
+  },
+  email: {
+    type: DataTypes.STRING,
+    unique: true
+  },
   password: DataTypes.STRING
 }, { 
   sequelize, 

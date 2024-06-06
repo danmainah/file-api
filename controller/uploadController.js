@@ -9,7 +9,6 @@ exports.getPosts = async (req, res) => {
      if(fs.existsSync(`uploads/${username}`)){
         fs.readdir(`uploads/${username}`, (err, files) => {
             if (err) {
-                console.log(err);
                 res.send("error");
             } else {
                 // Generate HTML to display each file in the "uploads" directory
@@ -19,14 +18,7 @@ exports.getPosts = async (req, res) => {
         });
     }
     else{
-        fs.mkdir(`uploads/${username}`, (err) => {
-            if (err) {
-                console.log("err");
-                res.send("error");
-            } else {
-                res.send("There are no files in uploads");
-            }
-        });
+        res.send("Directory does not exist, kindly create one");
     }   
   };
 

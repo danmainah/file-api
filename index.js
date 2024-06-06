@@ -20,7 +20,7 @@ port = 3000;
 }
 
 app.listen(port, ()=>{
-console.log('App listening...')
+console.log('App running...')
 })
 
 // Plug in the JWT strategy as a middleware so only verified users can access this route.
